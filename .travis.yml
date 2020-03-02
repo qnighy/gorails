@@ -1,13 +1,12 @@
 language: go
 go:
-  - 1.3
-  - 1.4.2
-  - 1.5
-  - 1.5.1
-  - 1.6
-  - 1.6.1
-  - 1.6.2
-  - tip
+- 1.11.x
+- 1.12.x
+- 1.13.x
+- 1.14.x
 
-install:
- - go get golang.org/x/crypto/pbkdf2
+before_install:
+- export GO111MODULE=on
+script:
+- cd session && go test ${gobuild_args} ./... && cd ..
+- cd marshal && go test ${gobuild_args} ./... && cd ..
