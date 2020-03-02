@@ -119,7 +119,7 @@ func DecryptSignedCookie(signedCookie, secretKeyBase, salt, signSalt string) (se
 	return
 }
 
-func DecryptAuthorizedEncryptedCookie(signedCookie, secretKeyBase, salt string) (session []byte, err error) {
+func DecryptAuthenticatedCookie(signedCookie, secretKeyBase, salt string) (session []byte, err error) {
 	cookie, err := url.QueryUnescape(signedCookie)
 	if err != nil {
 		return
