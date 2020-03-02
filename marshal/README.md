@@ -1,14 +1,14 @@
 gorails/marshal
 ===============
 
-[![Build Status](https://travis-ci.org/adjust/gorails.png)](https://travis-ci.org/adjust/gorails)
+[![Build Status](https://travis-ci.com/qnighy/gorails.png)](https://travis-ci.com/qnighy/gorails)
 
 ## Installation
 
 With Go and git installed:
 
 ```
-go get -u github.com/adjust/gorails/marshal
+go get -u github.com/qnighy/gorails/marshal
 ```
 
 ## Usage
@@ -16,7 +16,7 @@ go get -u github.com/adjust/gorails/marshal
 ```go
 import (
   "errors"
-  "github.com/adjust/gorails/marshal"
+  "github.com/qnighy/gorails/marshal"
 )
 
 func getAuthUserId(decrypted_session_data []byte) (user_id int64, err error) {
