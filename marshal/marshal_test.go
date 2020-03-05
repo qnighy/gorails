@@ -1,8 +1,8 @@
 package marshal
 
 import (
-	"testing"
 	"reflect"
+	"testing"
 )
 
 func TestCreateMarshalledObject(t *testing.T) {
@@ -51,7 +51,7 @@ func TestGetType(t *testing.T) {
 		{[]byte{4, 8, 91, 0}, TYPE_ARRAY},                                             // []
 		{[]byte{4, 8, 91, 6, 73, 34, 8, 102, 111, 111, 6, 58, 6, 69, 84}, TYPE_ARRAY}, // ["foo"]
 		// Maps (Ruby hashes)
-		{[]byte{4, 8, 123, 0}, TYPE_MAP},                                                                 // {}
+		{[]byte{4, 8, 123, 0}, TYPE_MAP}, // {}
 		{[]byte{4, 8, 123, 6, 58, 8, 102, 111, 111, 73, 34, 8, 98, 97, 114, 6, 58, 6, 69, 84}, TYPE_MAP}, // {foo: "bar"}
 	}
 
@@ -138,17 +138,17 @@ func TestGetAsFloat(t *testing.T) {
 	tests := []getAsFloatTestCase{
 		{[]byte{4, 8, 102, 6, 48}, 0.0},
 		{[]byte{4, 8, 102, 13, 49, 46, 52, 51, 101, 45, 49, 48}, 1.43e-10},
-		{[]byte{4, 8, 102, 13, 49, 46, 52, 51, 101, 45, 49, 48}, 1.43E-10},
+		{[]byte{4, 8, 102, 13, 49, 46, 52, 51, 101, 45, 49, 48}, 1.43e-10},
 		{[]byte{4, 8, 102, 10, 48, 46, 49, 50, 53}, 0.125},
 		{[]byte{4, 8, 102, 10, 49, 50, 46, 53, 54}, 12.56},
 		{[]byte{4, 8, 102, 12, 49, 46, 52, 51, 101, 49, 48}, 1.43e+10},
-		{[]byte{4, 8, 102, 12, 49, 46, 52, 51, 101, 49, 48}, 1.43E+10},
+		{[]byte{4, 8, 102, 12, 49, 46, 52, 51, 101, 49, 48}, 1.43e+10},
 		{[]byte{4, 8, 102, 14, 45, 49, 46, 52, 51, 101, 45, 49, 48}, -1.43e-10},
-		{[]byte{4, 8, 102, 14, 45, 49, 46, 52, 51, 101, 45, 49, 48}, -1.43E-10},
+		{[]byte{4, 8, 102, 14, 45, 49, 46, 52, 51, 101, 45, 49, 48}, -1.43e-10},
 		{[]byte{4, 8, 102, 11, 45, 48, 46, 49, 50, 53}, -0.125},
 		{[]byte{4, 8, 102, 11, 45, 49, 50, 46, 53, 54}, -12.56},
 		{[]byte{4, 8, 102, 13, 45, 49, 46, 52, 51, 101, 49, 48}, -1.43e+10},
-		{[]byte{4, 8, 102, 13, 45, 49, 46, 52, 51, 101, 49, 48}, -1.43E+10},
+		{[]byte{4, 8, 102, 13, 45, 49, 46, 52, 51, 101, 49, 48}, -1.43e+10},
 	}
 
 	value, err := CreateMarshalledObject([]byte{4, 8, 48}).GetAsFloat() // should return an error
@@ -245,8 +245,8 @@ func TestGetAsArray(t *testing.T) {
 	}
 
 	string_tests := []getAsArrayOfStringsTestCase{
-		{[]byte{4, 8, 91, 6, 73, 34, 8, 102, 111, 111, 6, 58, 6, 69, 84}, []string{"foo"}}, // ["foo"]
-		{[]byte{4, 8, 91, 6, 58, 8, 98, 97, 114}, []string{"bar"}}, // [:bar]
+		{[]byte{4, 8, 91, 6, 73, 34, 8, 102, 111, 111, 6, 58, 6, 69, 84}, []string{"foo"}},                                                                         // ["foo"]
+		{[]byte{4, 8, 91, 6, 58, 8, 98, 97, 114}, []string{"bar"}},                                                                                                 // [:bar]
 		{[]byte{4, 8, 91, 8, 73, 34, 8, 102, 111, 111, 6, 58, 6, 69, 84, 73, 34, 8, 98, 97, 114, 6, 59, 0, 84, 58, 8, 98, 97, 122}, []string{"foo", "bar", "baz"}}, // ["foo", "bar", :baz]
 		{[]byte{4, 8, 91, 8, 73, 34, 8, 102, 111, 111, 6, 58, 6, 69, 84, 73, 34, 8, 98, 97, 114, 6, 58, 13, 101, 110, 99, 111, 100, 105, 110, 103, 34, 14, 83, 104, 105, 102, 116, 95, 74, 73, 83, 58, 8, 98, 97, 122}, []string{"foo", "bar", "baz"}}, // ["foo", "bar".force_encoding("SHIFT_JIS"), :baz]
 		{[]byte{4, 8, 91, 7, 73, 34, 6, 120, 6, 58, 6, 69, 84, 64, 6}, []string{"x", "x"}},
@@ -329,7 +329,7 @@ func TestGetAsMap(t *testing.T) {
 			}
 		}
 
-		if ! reflect.DeepEqual(m, testCase.Expectation) {
+		if !reflect.DeepEqual(m, testCase.Expectation) {
 			t.Errorf("%v is not equal %v", m, testCase.Expectation)
 		}
 	}
@@ -350,9 +350,9 @@ func TestGetAsMap(t *testing.T) {
 		{
 			[]byte{4, 8, 123, 8, 58, 6, 97, 73, 34, 6, 120, 6, 58, 6, 69, 84, 58, 6, 98, 64, 6, 58, 6, 99, 64, 6},
 			map[string]string{
-				"a":  "x",
-				"b":  "x",
-				"c":  "x",
+				"a": "x",
+				"b": "x",
+				"c": "x",
 			},
 		},
 	}
@@ -369,7 +369,7 @@ func TestGetAsMap(t *testing.T) {
 			}
 		}
 
-		if ! reflect.DeepEqual(m, testCase.Expectation) {
+		if !reflect.DeepEqual(m, testCase.Expectation) {
 			t.Errorf("%v is not equal %v", m, testCase.Expectation)
 		}
 	}
@@ -378,9 +378,9 @@ func TestGetAsMap(t *testing.T) {
 		{
 			[]byte{4, 8, 123, 8, 58, 6, 97, 123, 6, 73, 34, 6, 120, 6, 58, 6, 69, 84, 105, 6, 58, 6, 98, 64, 6, 58, 6, 99, 64, 6},
 			map[string]map[string]int64{
-				"a":  map[string]int64{"x": 1},
-				"b":  map[string]int64{"x": 1},
-				"c":  map[string]int64{"x": 1},
+				"a": map[string]int64{"x": 1},
+				"b": map[string]int64{"x": 1},
+				"c": map[string]int64{"x": 1},
 			},
 		},
 	}
@@ -412,7 +412,7 @@ func TestGetAsMap(t *testing.T) {
 			}
 		}
 
-		if ! reflect.DeepEqual(m, testCase.Expectation) {
+		if !reflect.DeepEqual(m, testCase.Expectation) {
 			t.Errorf("%v is not equal %v", m, testCase.Expectation)
 		}
 	}
