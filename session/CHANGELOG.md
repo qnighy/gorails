@@ -1,5 +1,7 @@
 ## Unreleased
 
+- Apply `gofmt`
+
 ## 0.1.0
 
 Initial release.
