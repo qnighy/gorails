@@ -21,14 +21,26 @@ var TypeMismatch = errors.New("gorails/marshal: an attempt to implicitly typecas
 var IncompleteData = errors.New("gorails/marshal: incomplete data")
 
 const (
-	TYPE_UNKNOWN marshalledObjectType = 0
-	TYPE_NIL     marshalledObjectType = 1
-	TYPE_BOOL    marshalledObjectType = 2
-	TYPE_INTEGER marshalledObjectType = 3
-	TYPE_FLOAT   marshalledObjectType = 4
-	TYPE_STRING  marshalledObjectType = 5
-	TYPE_ARRAY   marshalledObjectType = 6
-	TYPE_MAP     marshalledObjectType = 7
+	TypeUnknown marshalledObjectType = 0
+	TypeNil     marshalledObjectType = 1
+	TypeBool    marshalledObjectType = 2
+	TypeInteger marshalledObjectType = 3
+	TypeFloat   marshalledObjectType = 4
+	TypeString  marshalledObjectType = 5
+	TypeArray   marshalledObjectType = 6
+	TypeMap     marshalledObjectType = 7
+)
+
+// For compatibility
+const (
+	TYPE_UNKNOWN marshalledObjectType = TypeUnknown
+	TYPE_NIL     marshalledObjectType = TypeNil
+	TYPE_BOOL    marshalledObjectType = TypeBool
+	TYPE_INTEGER marshalledObjectType = TypeInteger
+	TYPE_FLOAT   marshalledObjectType = TypeFloat
+	TYPE_STRING  marshalledObjectType = TypeString
+	TYPE_ARRAY   marshalledObjectType = TypeArray
+	TYPE_MAP     marshalledObjectType = TypeMap
 )
 
 func newMarshalledObject(majorVersion, minorVersion byte, data []byte, symbolCache *[]string, objectCache *[]*MarshalledObject) *MarshalledObject {
@@ -47,7 +59,7 @@ func CreateMarshalledObject(serializedData []byte) *MarshalledObject {
 
 func (obj *MarshalledObject) GetType() marshalledObjectType {
 	if len(obj.data) == 0 {
-		return TYPE_UNKNOWN
+		return TypeUnknown
 	}
 
 	if ref := obj.resolveObjectLink(); ref != nil {
@@ -56,30 +68,30 @@ func (obj *MarshalledObject) GetType() marshalledObjectType {
 
 	switch obj.data[0] {
 	case '0':
-		return TYPE_NIL
+		return TypeNil
 	case 'T', 'F':
-		return TYPE_BOOL
+		return TypeBool
 	case 'i':
-		return TYPE_INTEGER
+		return TypeInteger
 	case 'f':
-		return TYPE_FLOAT
+		return TypeFloat
 	case ':', ';':
-		return TYPE_STRING
+		return TypeString
 	case 'I':
 		if len(obj.data) > 1 && obj.data[1] == '"' {
-			return TYPE_STRING
+			return TypeString
 		}
 	case '[':
-		return TYPE_ARRAY
+		return TypeArray
 	case '{':
-		return TYPE_MAP
+		return TypeMap
 	}
 
-	return TYPE_UNKNOWN
+	return TypeUnknown
 }
 
 func (obj *MarshalledObject) GetAsBool() (value bool, err error) {
-	err = assertType(obj, TYPE_BOOL)
+	err = assertType(obj, TypeBool)
 	if err != nil {
 		return
 	}
@@ -90,7 +102,7 @@ func (obj *MarshalledObject) GetAsBool() (value bool, err error) {
 }
 
 func (obj *MarshalledObject) GetAsInteger() (value int64, err error) {
-	err = assertType(obj, TYPE_INTEGER)
+	err = assertType(obj, TypeInteger)
 	if err != nil {
 		return
 	}
@@ -101,7 +113,7 @@ func (obj *MarshalledObject) GetAsInteger() (value int64, err error) {
 }
 
 func (obj *MarshalledObject) GetAsFloat() (value float64, err error) {
-	err = assertType(obj, TYPE_FLOAT)
+	err = assertType(obj, TypeFloat)
 	if err != nil {
 		return
 	}
@@ -117,7 +129,7 @@ func (obj *MarshalledObject) GetAsString() (value string, err error) {
 		return ref.GetAsString()
 	}
 
-	err = assertType(obj, TYPE_STRING)
+	err = assertType(obj, TypeString)
 	if err != nil {
 		return
 	}
@@ -145,7 +157,7 @@ func (obj *MarshalledObject) GetAsArray() (value []*MarshalledObject, err error)
 		return ref.GetAsArray()
 	}
 
-	err = assertType(obj, TYPE_ARRAY)
+	err = assertType(obj, TypeArray)
 	if err != nil {
 		return
 	}
@@ -187,7 +199,7 @@ func (obj *MarshalledObject) GetAsMap() (value map[string]*MarshalledObject, err
 		return ref.GetAsMap()
 	}
 
-	err = assertType(obj, TYPE_MAP)
+	err = assertType(obj, TypeMap)
 	if err != nil {
 		return
 	}
@@ -254,13 +266,13 @@ func (obj *MarshalledObject) getSize() int {
 	}
 
 	switch obj.GetType() {
-	case TYPE_NIL, TYPE_BOOL:
+	case TypeNil, TypeBool:
 		headerSize = 0
 		dataSize = 1
-	case TYPE_INTEGER:
+	case TypeInteger:
 		headerSize = 1
 		_, dataSize = parseInt(obj.data[headerSize:])
-	case TYPE_STRING, TYPE_FLOAT:
+	case TypeString, TypeFloat:
 		headerSize = 1
 
 		if obj.data[0] == ';' {
@@ -278,13 +290,13 @@ func (obj *MarshalledObject) getSize() int {
 				obj.cacheSymbols(symbol)
 			}
 		}
-	case TYPE_ARRAY:
+	case TypeArray:
 		if obj.size == 0 {
 			obj.GetAsArray()
 		}
 
 		return obj.size
-	case TYPE_MAP:
+	case TypeMap:
 		if obj.size == 0 {
 			obj.GetAsMap()
 		}
@@ -322,7 +334,7 @@ func (obj *MarshalledObject) cacheObject(object *MarshalledObject) {
 	if len(object.data) > 0 && (object.data[0] == '@' || object.data[0] == ':' || object.data[0] == ';') {
 		return
 	}
-	if t := obj.GetType(); !(t == TYPE_STRING || t == TYPE_ARRAY || t == TYPE_MAP) {
+	if t := obj.GetType(); !(t == TypeString || t == TypeArray || t == TypeMap) {
 		return
 	}
 
@@ -340,9 +352,9 @@ func (obj *MarshalledObject) cacheObject(object *MarshalledObject) {
 
 func (obj *MarshalledObject) ToString() (str string) {
 	switch obj.GetType() {
-	case TYPE_NIL:
+	case TypeNil:
 		str = "<nil>"
-	case TYPE_BOOL:
+	case TypeBool:
 		v, _ := obj.GetAsBool()
 
 		if v {
@@ -350,12 +362,12 @@ func (obj *MarshalledObject) ToString() (str string) {
 		} else {
 			str = "false"
 		}
-	case TYPE_INTEGER:
+	case TypeInteger:
 		v, _ := obj.GetAsInteger()
 		str = strconv.FormatInt(v, 10)
-	case TYPE_STRING:
+	case TypeString:
 		str, _ = obj.GetAsString()
-	case TYPE_FLOAT:
+	case TypeFloat:
 		v, _ := obj.GetAsFloat()
 		str = strconv.FormatFloat(v, 'f', -1, 64)
 	}

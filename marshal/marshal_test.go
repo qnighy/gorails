@@ -27,32 +27,32 @@ func TestGetType(t *testing.T) {
 
 	tests := []getTypeTestCase{
 		// Nil
-		{[]byte{4, 8, 48}, TYPE_NIL},
+		{[]byte{4, 8, 48}, TypeNil},
 		// Booleans
-		{[]byte{4, 8, 70}, TYPE_BOOL}, // false
-		{[]byte{4, 8, 84}, TYPE_BOOL}, // true
+		{[]byte{4, 8, 70}, TypeBool}, // false
+		{[]byte{4, 8, 84}, TypeBool}, // true
 		// Integers
-		{[]byte{4, 8, 105, 0}, TYPE_INTEGER},                 // 0
-		{[]byte{4, 8, 105, 6}, TYPE_INTEGER},                 // 1
-		{[]byte{4, 8, 105, 250}, TYPE_INTEGER},               // -1
-		{[]byte{4, 8, 105, 3, 64, 226, 1}, TYPE_INTEGER},     // 123456
-		{[]byte{4, 8, 105, 253, 192, 29, 254}, TYPE_INTEGER}, // -123456
+		{[]byte{4, 8, 105, 0}, TypeInteger},                 // 0
+		{[]byte{4, 8, 105, 6}, TypeInteger},                 // 1
+		{[]byte{4, 8, 105, 250}, TypeInteger},               // -1
+		{[]byte{4, 8, 105, 3, 64, 226, 1}, TypeInteger},     // 123456
+		{[]byte{4, 8, 105, 253, 192, 29, 254}, TypeInteger}, // -123456
 		// Floats
-		{[]byte{4, 8, 102, 6, 48}, TYPE_FLOAT},                               // 0.0
-		{[]byte{4, 8, 102, 8, 49, 46, 53}, TYPE_FLOAT},                       // 1.5
-		{[]byte{4, 8, 102, 9, 45, 49, 46, 53}, TYPE_FLOAT},                   // -1.5
-		{[]byte{4, 8, 102, 12, 49, 46, 50, 53, 101, 51, 48}, TYPE_FLOAT},     // 1.25e30
-		{[]byte{4, 8, 102, 13, 49, 46, 50, 53, 101, 45, 51, 48}, TYPE_FLOAT}, // 1.25e-30
+		{[]byte{4, 8, 102, 6, 48}, TypeFloat},                               // 0.0
+		{[]byte{4, 8, 102, 8, 49, 46, 53}, TypeFloat},                       // 1.5
+		{[]byte{4, 8, 102, 9, 45, 49, 46, 53}, TypeFloat},                   // -1.5
+		{[]byte{4, 8, 102, 12, 49, 46, 50, 53, 101, 51, 48}, TypeFloat},     // 1.25e30
+		{[]byte{4, 8, 102, 13, 49, 46, 50, 53, 101, 45, 51, 48}, TypeFloat}, // 1.25e-30
 		// Strings
-		{[]byte{4, 8, 73, 34, 0, 6, 58, 6, 69, 84}, TYPE_STRING},                                                           // ''
-		{[]byte{4, 8, 58, 10, 104, 101, 108, 108, 111}, TYPE_STRING},                                                       // :hello
-		{[]byte{4, 8, 73, 34, 17, 72, 101, 108, 108, 111, 44, 32, 119, 111, 114, 108, 100, 6, 58, 6, 69, 84}, TYPE_STRING}, // 'Hello, world'
+		{[]byte{4, 8, 73, 34, 0, 6, 58, 6, 69, 84}, TypeString},                                                           // ''
+		{[]byte{4, 8, 58, 10, 104, 101, 108, 108, 111}, TypeString},                                                       // :hello
+		{[]byte{4, 8, 73, 34, 17, 72, 101, 108, 108, 111, 44, 32, 119, 111, 114, 108, 100, 6, 58, 6, 69, 84}, TypeString}, // 'Hello, world'
 		// Arrays
-		{[]byte{4, 8, 91, 0}, TYPE_ARRAY},                                             // []
-		{[]byte{4, 8, 91, 6, 73, 34, 8, 102, 111, 111, 6, 58, 6, 69, 84}, TYPE_ARRAY}, // ["foo"]
+		{[]byte{4, 8, 91, 0}, TypeArray},                                             // []
+		{[]byte{4, 8, 91, 6, 73, 34, 8, 102, 111, 111, 6, 58, 6, 69, 84}, TypeArray}, // ["foo"]
 		// Maps (Ruby hashes)
-		{[]byte{4, 8, 123, 0}, TYPE_MAP}, // {}
-		{[]byte{4, 8, 123, 6, 58, 8, 102, 111, 111, 73, 34, 8, 98, 97, 114, 6, 58, 6, 69, 84}, TYPE_MAP}, // {foo: "bar"}
+		{[]byte{4, 8, 123, 0}, TypeMap}, // {}
+		{[]byte{4, 8, 123, 6, 58, 8, 102, 111, 111, 73, 34, 8, 98, 97, 114, 6, 58, 6, 69, 84}, TypeMap}, // {foo: "bar"}
 	}
 
 	for _, testCase := range tests {
@@ -378,9 +378,9 @@ func TestGetAsMap(t *testing.T) {
 		{
 			[]byte{4, 8, 123, 8, 58, 6, 97, 123, 6, 73, 34, 6, 120, 6, 58, 6, 69, 84, 105, 6, 58, 6, 98, 64, 6, 58, 6, 99, 64, 6},
 			map[string]map[string]int64{
-				"a": map[string]int64{"x": 1},
-				"b": map[string]int64{"x": 1},
-				"c": map[string]int64{"x": 1},
+				"a": {"x": 1},
+				"b": {"x": 1},
+				"c": {"x": 1},
 			},
 		},
 	}
