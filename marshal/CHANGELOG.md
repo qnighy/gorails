@@ -1,6 +1,7 @@
 ## Unreleased
 
 - Apply `gofmt`
+- Refactor `marshal.go` for more idiomatic Go code
 
 ## 0.1.0
 
