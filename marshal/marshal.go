@@ -40,8 +40,8 @@ func newMarshalledObjectWithSize(majorVersion, minorVersion byte, data []byte, s
 }
 
 func CreateMarshalledObject(serializedData []byte) *MarshalledObject {
-	symbolCache := []string{}
-	objectCache := []*MarshalledObject{}
+	var symbolCache []string
+	var objectCache []*MarshalledObject
 	return newMarshalledObject(serializedData[0], serializedData[1], serializedData[2:], &symbolCache, &objectCache)
 }
 
