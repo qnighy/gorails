@@ -21,14 +21,14 @@ var TypeMismatch = errors.New("gorails/marshal: an attempt to implicitly typecas
 var IncompleteData = errors.New("gorails/marshal: incomplete data")
 
 const (
-	TypeUnknown marshalledObjectType = 0
-	TypeNil     marshalledObjectType = 1
-	TypeBool    marshalledObjectType = 2
-	TypeInteger marshalledObjectType = 3
-	TypeFloat   marshalledObjectType = 4
-	TypeString  marshalledObjectType = 5
-	TypeArray   marshalledObjectType = 6
-	TypeMap     marshalledObjectType = 7
+	TypeUnknown marshalledObjectType = iota
+	TypeNil
+	TypeBool
+	TypeInteger
+	TypeFloat
+	TypeString
+	TypeArray
+	TypeMap
 )
 
 // For compatibility
