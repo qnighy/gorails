@@ -56,9 +56,9 @@ func TestGetType(t *testing.T) {
 	}
 
 	for _, testCase := range tests {
-		object_type := CreateMarshalledObject(testCase.Data).GetType()
-		if object_type != testCase.Expectation {
-			t.Errorf("GetType() returned '%v' instead of '%v'", marshalledObjectTypeNames[int(object_type)], marshalledObjectTypeNames[testCase.Expectation])
+		objectType := CreateMarshalledObject(testCase.Data).GetType()
+		if objectType != testCase.Expectation {
+			t.Errorf("GetType() returned '%v' instead of '%v'", marshalledObjectTypeNames[int(objectType)], marshalledObjectTypeNames[testCase.Expectation])
 		}
 	}
 }
@@ -210,7 +210,7 @@ type getAsArrayOfStringsTestCase struct {
 }
 
 func TestGetAsArray(t *testing.T) {
-	int_tests := []getAsArrayOfIntsTestCase{
+	intTests := []getAsArrayOfIntsTestCase{
 		{[]byte{4, 8, 91, 0}, []int64{}},
 		{[]byte{4, 8, 91, 10, 105, 255, 0, 105, 250, 105, 0, 105, 6, 105, 2, 0, 1}, []int64{-256, -1, 0, 1, 256}},
 	}
@@ -220,7 +220,7 @@ func TestGetAsArray(t *testing.T) {
 		t.Error("GetAsArray() returned no error when attempted to typecast nil to array")
 	}
 
-	for _, testCase := range int_tests {
+	for _, testCase := range intTests {
 		value, err := CreateMarshalledObject(testCase.Data).GetAsArray()
 
 		if err != nil {
@@ -244,7 +244,7 @@ func TestGetAsArray(t *testing.T) {
 		}
 	}
 
-	string_tests := []getAsArrayOfStringsTestCase{
+	stringTests := []getAsArrayOfStringsTestCase{
 		{[]byte{4, 8, 91, 6, 73, 34, 8, 102, 111, 111, 6, 58, 6, 69, 84}, []string{"foo"}},                                                                         // ["foo"]
 		{[]byte{4, 8, 91, 6, 58, 8, 98, 97, 114}, []string{"bar"}},                                                                                                 // [:bar]
 		{[]byte{4, 8, 91, 8, 73, 34, 8, 102, 111, 111, 6, 58, 6, 69, 84, 73, 34, 8, 98, 97, 114, 6, 59, 0, 84, 58, 8, 98, 97, 122}, []string{"foo", "bar", "baz"}}, // ["foo", "bar", :baz]
@@ -252,7 +252,7 @@ func TestGetAsArray(t *testing.T) {
 		{[]byte{4, 8, 91, 7, 73, 34, 6, 120, 6, 58, 6, 69, 84, 64, 6}, []string{"x", "x"}},
 	}
 
-	for _, testCase := range string_tests {
+	for _, testCase := range stringTests {
 		value, err := CreateMarshalledObject(testCase.Data).GetAsArray()
 
 		if err != nil {
@@ -293,7 +293,7 @@ type getAsMapOfMapsTestCase struct {
 }
 
 func TestGetAsMap(t *testing.T) {
-	int_tests := []getAsMapOfIntsTestCase{
+	intTests := []getAsMapOfIntsTestCase{
 		{
 			[]byte{4, 8, 123, 0},
 			map[string]int64{},
@@ -317,7 +317,7 @@ func TestGetAsMap(t *testing.T) {
 		t.Error("GetAsMap() returned no error when attempted to typecast nil to map")
 	}
 
-	for _, testCase := range int_tests {
+	for _, testCase := range intTests {
 		value, err := CreateMarshalledObject(testCase.Data).GetAsMap()
 
 		m := make(map[string]int64)
@@ -334,7 +334,7 @@ func TestGetAsMap(t *testing.T) {
 		}
 	}
 
-	string_tests := []getAsMapOfStringsTestCase{
+	stringTests := []getAsMapOfStringsTestCase{
 		{
 			[]byte{4, 8, 123, 12, 73, 34, 6, 48, 6, 58, 6, 69, 84, 73, 34, 6, 48, 6, 59, 0, 84, 105, 6, 73, 34, 6, 49, 6, 59, 0, 84, 105, 250, 73, 34, 0, 6, 59, 0, 84, 48, 73, 34, 8, 102, 111, 111, 6, 59, 0, 84, 73, 34, 8, 102, 111, 111, 6, 59, 0, 84, 73, 34, 8, 98, 97, 114, 6, 58, 13, 101, 110, 99, 111, 100, 105, 110, 103, 34, 14, 83, 104, 105, 102, 116, 95, 74, 73, 83, 73, 34, 8, 98, 97, 114, 6, 59, 0, 84, 58, 8, 98, 97, 122, 59, 7, 73, 34, 6, 48, 6, 59, 0, 84},
 			map[string]string{
@@ -357,7 +357,7 @@ func TestGetAsMap(t *testing.T) {
 		},
 	}
 
-	for _, testCase := range string_tests {
+	for _, testCase := range stringTests {
 		value, err := CreateMarshalledObject(testCase.Data).GetAsMap()
 
 		m := make(map[string]string)
@@ -374,7 +374,7 @@ func TestGetAsMap(t *testing.T) {
 		}
 	}
 
-	map_tests := []getAsMapOfMapsTestCase{
+	mapTests := []getAsMapOfMapsTestCase{
 		{
 			[]byte{4, 8, 123, 8, 58, 6, 97, 123, 6, 73, 34, 6, 120, 6, 58, 6, 69, 84, 105, 6, 58, 6, 98, 64, 6, 58, 6, 99, 64, 6},
 			map[string]map[string]int64{
@@ -385,7 +385,7 @@ func TestGetAsMap(t *testing.T) {
 		},
 	}
 
-	for _, testCase := range map_tests {
+	for _, testCase := range mapTests {
 		value, _ := CreateMarshalledObject(testCase.Data).GetAsMap()
 
 		m := make(map[string]map[string]int64)
