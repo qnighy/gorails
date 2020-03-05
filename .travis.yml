@@ -10,3 +10,5 @@ before_install:
 script:
 - cd session && go test ${gobuild_args} ./... && cd ..
 - cd marshal && go test ${gobuild_args} ./... && cd ..
+- if [[ $TRAVIS_GO_VERSION = 1.14.x ]]; then gofmt -d .; fi
+- if [[ $TRAVIS_GO_VERSION = 1.14.x ]]; then test -z $(gofmt -d .); fi
