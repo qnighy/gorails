@@ -14,19 +14,21 @@ go get -u github.com/qnighy/gorails/session
 ## Usage
 
 ```go
-import "github.com/qnighy/gorails/session"
+package main
+
+import "github.com/adjust/gorails/session"
 
 // sessionCookie - raw _<your app name>_session cookie
 func getRailsSessionData(sessionCookie string) (decryptedCookieData []byte, err error) {
-  decryptedCookieData, err = session.DecryptSignedCookie(sessionCookie, secretKeyBase, salt, signSalt)
+	decryptedCookieData, err = session.DecryptSignedCookie(sessionCookie, secretKeyBase, salt, signSalt)
 
-  return
+	return
 }
 
 const (
-  secretKeyBase = "..."                      // can be found in config/initializers/secret_token.rb
-  salt          = "encrypted cookie"         // default value for Rails 4 app
-  signSalt      = "signed encrypted cookie"  // default value for Rails 4 app
+	secretKeyBase = "..."                     // can be found in config/initializers/secret_token.rb
+	salt          = "encrypted cookie"        // default value for Rails 4 app
+	signSalt      = "signed encrypted cookie" // default value for Rails 4 app
 )
 ```
 
